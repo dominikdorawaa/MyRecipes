@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Moje przepisy!</title>
+    <script src="https://kit.fontawesome.com/841f4f2efe.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+<div class="header">
+    <nav class="navbar">
+        <ul>
+            <li><h1>Upo przepisy</h1></li>
+            <li><a th:href="@{/view/all}">Wszystkie przepisy</a></li>
+            <li><a th:href="@{/view/my}">Moje przepisy</a></li>
+            <li><a th:href="@{/view/random}">Losowy przepis</a></li>
+            <li>
+                <button id="addButton">Dodaj przepis</button>
+            </li>
+        </ul>
+    </nav>
+</div>
+
+<main class="content">
+    <div class="main-page">
+        <div class="recipe-top" th:data-id="${recipe.id}">
+            <div class="recipe-title">
+                <h1 th:text="${recipe.title}"></h1>
+                <p th:text="${recipe.description}"></p>
+            </div>
+            <img th:src="${recipe.image}" alt="Obraz przepisu"/>
+        </div>
+
+        <div class="recipe-info">
+            <div class="left-bar">
+                <div class="ingredients-list">
+                    <h4 th:text="'Ilość porcji: ' + ${recipe.servings}"></h4>
+                    <h3>Składniki</h3>
+                    <ul>
+                        <li th:each="ingredient : ${recipe.extendedIngredients}">
+                            <span th:text="${ingredient.amount} + ' ' + ${ingredient.unit} + ' ' + ${ingredient.name}"></span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="nutritional-table">
+                    <h3> Tabela wartości odżywczych</h3>
+                    <table>
+                        <tr>
+                            <th>Wartości odżywcze</th>
+                            <th>Ilość</th>
+                        </tr>
+
+                        <tr th:each="wartosc : ${recipe.nutrition.nutrients}"
+                            th:if="${#strings.equalsIgnoreCase(wartosc.name, 'Calories')
+                    or #strings.equalsIgnoreCase(wartosc.name, 'Fat')
+                    or #strings.equalsIgnoreCase(wartosc.name, 'Carbohydrates')
+                    or #strings.equalsIgnoreCase(wartosc.name, 'Protein')
+                    or #strings.equalsIgnoreCase(wartosc.name, 'Fiber')
+                    or #strings.equalsIgnoreCase(wartosc.name, 'Carbs')}">
+                            <td th:text="${wartosc.name}"></td>
+                            <td th:text="${wartosc.amount + ' ' + wartosc.unit}"></td>
+                        </tr>
+
+                        <tr>
+                            <td>Wartość energetyczna na 1 porcję</td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+
+
+            <div class="instructions">
+                <h2>Sposób przygotowania:</h2>
+                <ul th:each="instruction : ${recipe.analyzedInstructions}">
+                    <li th:each="step : ${instruction.steps}">
+                        <h3 th:text="'Krok ' + ${step.number}"></h3>
+                        <span th:text="${step.step}"></span>
+                    </li>
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+</main>
+
+
+<footer class="footer">
+    <p>DonniX &#169;</p>
+</footer>
+
+
+<script>
+    document.getElementById("addButton").addEventListener("click", function () {
+        window.location.href = "/addForm";
+    });
+
+    document.getElementById("adminButton").addEventListener("click", function () {
+        window.location.href = "/admin";
+    });
+
+    document.querySelectorAll(".item").forEach(function (item) {
+        item.addEventListener("click", function () {
+            var recipeId = item.getAttribute("data-id");
+
+            window.location.href = "/view/recipe/" + recipeId;
+        });
+    });
+</script>
+
+
+</body>
+</html>

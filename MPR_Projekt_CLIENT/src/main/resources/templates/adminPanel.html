@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="/css/style.css">
+    <title>Admin panel</title>
+    <script src="https://kit.fontawesome.com/841f4f2efe.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+<div class="header">
+    <nav class="navbar">
+        <ul>
+            <li><h1>Upo przepisy</h1></li>
+            <li><a th:href="@{/view/all}">Wszystkie przepisy</a></li>
+            <li><a th:href="@{/view/my}">Moje przepisy</a></li>
+            <li><a th:href="@{/view/random}">Losowy przepis</a></li>
+            <li><button id="addButton">Dodaj przepis</button></li>
+        </ul>
+    </nav>
+</div>
+
+
+    <main class="contentcik">
+        <h2>Lista przepisów</h2>
+        <table>
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Tytuł</th>
+                <th>Opis</th>
+                <th>Zdjęcie</th>
+                <th>Usuń</th>
+                <th>Edytuj</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="recipe : ${recipes}">
+                <td th:text="${recipe.id}"></td>
+                <td th:text="${recipe.title}"></td>
+                <td th:text="${recipe.description}"></td>
+                <td><img th:src="@{/images/{image}(image=${recipe.image})}" alt="zdjecie przepisu" /></td>
+              <td>  <a th:href="@{/deleteForm/{id}(id=${recipe.id})}" id="deleteButton">Usuń</a></td>
+              <td>  <a th:href="@{/editForm/{id}(id=${recipe.id})}" id="editButton">Edytuj</a></td>
+            </tr>
+            </tbody>
+        </table>
+
+        <div th:if="${recipes == null || #lists.isEmpty(recipes)}">
+            <p>Brak przepisów do wyświetlenia.</p>
+        </div>
+    </main>
+
+
+    <script>
+        document.getElementById("addButton").addEventListener("click", function () {
+            window.location.href = "/addForm";
+        });
+    </script>
+</body>
+</html>

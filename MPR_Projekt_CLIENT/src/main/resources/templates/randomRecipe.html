@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}"/>
+    <title>Moje przepisy!</title>
+    <script src="https://kit.fontawesome.com/841f4f2efe.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+
+<div class="header">
+    <nav class="navbar">
+        <ul>
+            <li><h1>Upo przepisy</h1></li>
+            <li><a th:href="@{/view/all}">Wszystkie przepisy</a></li>
+            <li><a th:href="@{/view/my}">Moje przepisy</a></li>
+            <li><a th:href="@{/view/random}">Losowy przepis</a></li>
+            <li><button id="addButton">Dodaj przepis</button></li>
+        </ul>
+    </nav>
+</div>
+
+
+
+<div id="all">
+    <div class="main">
+        <div th:each="recipe : ${recipes}" class="item" th:data-id="${recipe.id}">
+            <img th:src="${recipe.image}" alt="Obraz przepisu"/>
+            <div class="item-title">
+                <h1 th:text="${recipe.title}"></h1>
+            </div>
+            <div class="item-info">
+                <p th:text="${recipe.description}"></p>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}" />
+    <title>Edit</title>
+</head>
+<body>
+
+<div class="header">
+    <nav class="navbar">
+        <ul>
+            <li><h1>Upo przepisy</h1></li>
+            <li><a th:href="@{/view/all}">Wszystkie przepisy</a></li>
+            <li><a th:href="@{/view/my}">Moje przepisy</a></li>
+            <li><a th:href="@{/view/random}">Losowy przepis</a></li>
+            <li><button id="addButton">Dodaj przepis</button></li>
+        </ul>
+    </nav>
+</div>
+
+<main class="content">
+    <div class="main-page">
+        <h1>Edycja przepisu</h1>
+        <form th:action="@{/editForm/{id}(id=${recipe.id})}" th:object="${recipe}" method="post">
+            <input type="hidden" name="id" th:value="*{id}" />
+
+            <div class="recipe-top">
+                <div class="recipe-title">
+
+
+
+                    <div id="fakeFormTop">
+                        <label for="title">Tytuł:</label>
+                        <input id="title" name="title" type="text" placeholder="Wpisz tytuł"  th:field="*{title}" required>
+                        <label for="description">Opis:</label>
+                        <textarea id="description" name="description" placeholder="Wpisz opis"  th:field="*{description}"></textarea>
+                        <label for="image">Foto:</label>
+                        <input id="image" name="image" type="text" placeholder="np. spaghetti.png"  th:field="*{image}">
+
+                    </div>
+
+                    <div id="savedData" style="display: none;">
+                        <h1 id="savedTitle"></h1>
+                        <p id="savedDescription"></p>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" id="save">Zapisz</button>
+                        <button type="button" id="edit">Edytuj</button>
+                    </div>
+
+                </div>
+
+                <img id="savedImage" src="images/przykladowe.png" alt="zdjecie przepisu"/>
+                <br/>
+            </div>
+
+            <div class="recipe-info">
+                <div class="left-bar">
+                    <div class="ingredients-list">
+
+                        <div id="fakeFormIngredients">
+                            <label for="servings">Ilość porcji:</label>
+                            <input id="servings" name="servings" type="number" placeholder="Wpisz ilość porcji" th:field="*{servings}"
+                                   required>
+                            <h3>Składniki</h3>
+                            <ul id="ingredientsList">
+                                <li><input type="number" id="amount" name="extendedIngredients[0].amount" th:field="*{extendedIngredients[0].amount}"
+                                           placeholder="Ilość">
+                                    <select id="unit" name="extendedIngredients[0].unit"  th:field="*{extendedIngredients[0].unit}">
+                                        <label for="unit"></label>
+                                        <option th:each="unit : ${units}" th:value="${unit.name}"
+                                                th:text="${unit}"></option>
+                                    </select>
+                                    <input type="text" id="ingredient" name="extendedIngredients[0].name" th:field="*{extendedIngredients[0].name}"
+                                           placeholder="Składnik 1"></li>
+
+
+                            </ul>
+                            <button type="button" id="addIngredient">Dodaj składnik</button>
+
+                        </div>
+
+                        <div id="savedData2" style="display:none;">
+                            <h4 id="savedServings"></h4>
+                            <h1>Składniki</h1>
+                            <ul id="savedIngredientsList"></ul>
+                        </div>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" id="save-ingredients">Zapisz</button>
+                        <button type="button" id="edit-ingredients" disabled>Edytuj</button>
+                    </div>
+
+                    <div class="nutritional-table">
+                        <h3> Tabela wartości odżywczych</h3>
+
+                        <div id="fakeFormNutrition">
+                            <ul>
+                                <li><input type="hidden" name="nutrition.nutrients[0].name" value="Kalorie" th:field="*{nutrition.nutrients[0].name}">
+                                    <input id="calories" name="nutrition.nutrients[0].amount" type="number"
+                                           placeholder="Wpisz kalorie" th:field="*{nutrition.nutrients[0].amount}" >
+                                    <input type="hidden" name="nutrition.nutrients[0].unit" value="kcal" th:field="*{nutrition.nutrients[0].unit}">
+                                </li>
+
+                                <li><input type="hidden" name="nutrition.nutrients[1].name" value="Tłuszcz" th:field="*{nutrition.nutrients[1].name}">
+                                    <input id="fat" name="nutrition.nutrients[1].amount" type="number" step="0.1"
+                                           placeholder="Wpisz tłuszcz" th:field="*{nutrition.nutrients[1].amount}">
+                                    <input type="hidden" name="nutrition.nutrients[1].unit" value="g" th:field="*{nutrition.nutrients[1].unit}">
+                                </li>
+
+                                <li><input type="hidden" name="nutrition.nutrients[2].name" value="Węglowodany" th:field="*{nutrition.nutrients[2].name}">
+                                    <input id="carbohydrates" name="nutrition.nutrients[2].amount" type="number"
+                                           step="0.1" placeholder="Wpisz węglowodany" th:field="*{nutrition.nutrients[2].amount}">
+                                    <input type="hidden" name="nutrition.nutrients[2].unit" value="g" th:field="*{nutrition.nutrients[2].unit}">
+                                </li>
+
+                                <li><input type="hidden" name="nutrition.nutrients[3].name" value="Białko" th:field="*{nutrition.nutrients[3].name}">
+                                    <input id="protein" name="nutrition.nutrients[3].amount" type="number" step="0.1"
+                                           placeholder="Wpisz białko" th:field="*{nutrition.nutrients[3].amount}">
+                                    <input type="hidden" name="nutrition.nutrients[3].unit" value="g" th:field="*{nutrition.nutrients[3].unit}">
+
+                                </li>
+                            </ul>
+
+                        </div>
+
+                        <div id="savedNutritionData" style="display: none;">
+                            <table>
+                                <tr>
+                                    <th>Wartości odżywcze</th>
+                                    <th>Ilość</th>
+                                </tr>
+
+                                <tr>
+                                    <td>Kalorie:</td>
+                                    <td id="savedCalories"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Tłuszcz:</td>
+                                    <td id="savedFat"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Węglowodany:</td>
+                                    <td id="savedCarbohydrates"></td>
+                                </tr>
+
+                                <tr>
+                                    <td>Białko:</td>
+                                    <td id="savedProtein"></td>
+                                </tr>
+                            </table>
+                        </div>
+
+                        <div class="buttons">
+                            <button type="button" id="save-nutrition">Zapisz</button>
+                            <button type="button" id="edit-nutrition">Edytuj</button>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="instructions">
+                    <h2>Sposób przygotowania:</h2>
+
+                    <div id="fakeFormSteps">
+                        <ul id="stepsList">
+
+                            <li>
+                                <label for="stepTitle">Krok:</label>
+                                <input id="stepTitle" name="analyzedInstructions[0].steps[0].title" type="text"
+                                       placeholder="Tytuł kroku" class="step-title" th:field="*{analyzedInstructions[0].steps[0].title}"/>
+
+                                <label for="stepDescription">Opis:</label>
+                                <textarea id="stepDescription" name="analyzedInstructions[0].steps[0].step"
+                                          placeholder="Opis kroku" class="step-description" th:field="*{analyzedInstructions[0].steps[0].step}"></textarea>
+
+                                <input type="hidden" name="analyzedInstructions[0].steps[0].number"
+                                       class="step-number" th:field="*{analyzedInstructions[0].steps[0].number}"/>
+                            </li>
+                        </ul>
+                        <button type="button" id="addStep">Dodaj krok</button>
+
+                    </div>
+
+                    <div id="savedDataSteps" style="display:none;">
+                        <h4 id="savedSteps"></h4>
+                        <ul id="savedStepsList"></ul>
+                    </div>
+
+                    <div class="buttons">
+                        <button type="button" id="save-steps">Zapisz</button>
+                        <button type="button" id="edit-steps" disabled>Edytuj</button>
+                        <button type="submit" id="submit-recipe">Zapisz cały przepis</button>
+                    </div>
+
+                </div>
+
+
+            </div>
+
+        </form>
+    </div>
+</main>
+
+<footer class="footer">
+    <p>DonniX &#169;</p>
+</footer>
+
+<a id="error" th:if="${error}" th:text="${error}"></a>
+</div>
+
+
+
+<!--<div id="edit">-->
+<!--    <h1>Edycja przepisu</h1>-->
+<!--    <form th:action="@{/editForm/{id}(id=${recipe.id})}" th:object="${recipe}" method="post">-->
+<!--    <input type="hidden" name="id" th:value="*{id}" />-->
+
+<!--    <label for="name">Tytuł:</label>-->
+<!--    <input type="text" id="name" name="title" th:field="*{title}"/><br/>-->
+
+<!--    <label for="color">Opis:</label>-->
+<!--    <input type="text" id="color" name="description" th:field="*{description}"/><br/>-->
+
+<!--    <button type="submit" id="submit"> Zapisz zmiany </button>-->
+<!--     <a type="button" id="cancelButton" th:href="@{/view/all}">Cofnij</a>-->
+<!--        <div th:if="${error}" th:text="${error}"></div>-->
+<!--    </form>-->
+<!--</div>-->
+
+
+<script>
+    document.getElementById("cancelButton").addEventListener("click", function () {
+        window.history.back();
+    });
+
+
+        document.getElementById("submit-recipe").addEventListener("click", function () {
+        document.getElementById("fullRecipeForm").submit();
+    });
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+        // Zmienne dla tytułu, opisu i zdjecia
+
+        const recipeTop = document.getElementById("fakeFormTop");
+        const savedData = document.getElementById("savedData");
+
+        const titleInput = document.getElementById("title");
+        const descriptionInput = document.getElementById("description");
+        const imageInput = document.getElementById("image");
+
+        const savedTitle = document.getElementById("savedTitle");
+        const savedDescription = document.getElementById("savedDescription");
+        const savedImage = document.getElementById("savedImage");
+
+        const saveButton = document.getElementById("save");
+        const editButton = document.getElementById("edit");
+
+
+//WSZYSTKO DLA SKLADNIKOW
+
+        // Indeks składnika - pierwszy element ma index 0, więc nowe będą 1, 2, ...
+        let ingredientIndex = 1;
+
+        // Obsługa guzika "Dodaj składnik"
+        document.getElementById('addIngredient').addEventListener('click', function () {
+        const li = document.createElement('li');
+
+        // Pole: Ilość
+        const inputAmount = document.createElement('input');
+        inputAmount.type = 'number';
+        inputAmount.placeholder = 'Ilość';
+        inputAmount.name = `extendedIngredients[${ingredientIndex}].amount`;
+        inputAmount.classList.add('ingredient-amount');
+        li.appendChild(inputAmount);
+
+        // Pole: Jednostka (kopiujemy opcje z pierwszego selecta)
+        const selectUnit = document.createElement('select');
+        selectUnit.name = `extendedIngredients[${ingredientIndex}].unit`;
+        selectUnit.classList.add('ingredient-unit');
+        const firstSelect = document.querySelector('#ingredientsList li select');
+        if (firstSelect) {
+        selectUnit.innerHTML = firstSelect.innerHTML; // kopiujemy listę opcji
+    }
+        li.appendChild(selectUnit);
+
+        // Pole: Nazwa składnika
+        const inputName = document.createElement('input');
+        inputName.type = 'text';
+        inputName.placeholder = `Składnik ${ingredientIndex + 1}`;
+        inputName.name = `extendedIngredients[${ingredientIndex}].name`;
+        inputName.classList.add('ingredient-name');
+        li.appendChild(inputName);
+
+        // Dodajemy nowy wiersz do listy składników
+        document.getElementById('ingredientsList').appendChild(li);
+
+        ingredientIndex++;
+    });
+
+        // Obsługa guzika "Zapisz"
+        document.getElementById('save-ingredients').addEventListener('click', function () {
+        // Odczytanie ilości porcji
+        const servings = document.getElementById('servings').value;
+        document.getElementById('savedServings').textContent = 'Ilość porcji: ' + servings;
+
+        // Pobieramy wszystkie wiersze z listy składników
+        const liElements = document.querySelectorAll('#ingredientsList li');
+        const savedList = document.getElementById('savedIngredientsList');
+        savedList.innerHTML = ''; // czyszczenie poprzednich zapisów
+
+        liElements.forEach(function (li) {
+        const amountInput = li.querySelector('input[type="number"]');
+        const selectUnit = li.querySelector('select');
+        const nameInput = li.querySelector('input[type="text"]');
+
+        const amount = amountInput ? amountInput.value : '';
+        const unit = selectUnit ? selectUnit.value : '';
+        const ingredientName = nameInput ? nameInput.value : '';
+
+        // Jeżeli choć jedno pole jest wypełnione, to łączymy dane
+        if (amount || unit || ingredientName) {
+        // Łączymy dane w jeden napis, np. "100 ml mleko"
+        const ingredientStr = amount + ' ' + unit + ' ' + ingredientName;
+        const liSaved = document.createElement('li');
+        liSaved.textContent = ingredientStr.trim();
+        savedList.appendChild(liSaved);
+    }
+    });
+
+
+        document.getElementById('fakeFormIngredients').style.display = 'none';
+        document.getElementById('savedData2').style.display = 'block';
+
+
+        document.getElementById('edit-ingredients').disabled = false;
+    });
+
+        // Obsługa guzika "Edytuj"
+        document.getElementById('edit-ingredients').addEventListener('click', function () {
+
+        document.getElementById('fakeFormIngredients').style.display = 'block';
+        document.getElementById('savedData2').style.display = 'none';
+
+
+        document.getElementById('edit-ingredients').disabled = true;
+    });
+
+
+        // Zmienne dla kroków
+        const recipeStepsForm = document.getElementById("fakeFormSteps");
+        const stepsList = document.getElementById("stepsList");
+        const savedDataSteps = document.getElementById("savedDataSteps");
+        const savedStepsList = document.getElementById("savedStepsList");
+
+        const addStepButton = document.getElementById("addStep");
+        const saveStepsButton = document.getElementById("save-steps");
+        const editStepsButton = document.getElementById("edit-steps");
+
+
+        function updateStepNumbers() {
+        const stepItems = stepsList.querySelectorAll("li");
+        stepItems.forEach((li, index) => {
+        const stepNumberInput = li.querySelector(".step-number");
+        stepNumberInput.value = index + 1;
+
+        const titleInput = li.querySelector(".step-title");
+        titleInput.placeholder = `Tytuł kroku ${index + 1}`;
+    });
+    }
+
+        // Dodawanie nowego kroku
+        addStepButton.addEventListener("click", function () {
+
+        const stepIndex = stepsList.children.length;
+
+        let newLi = document.createElement("li");
+
+        let stepTitleInput = document.createElement("input");
+        stepTitleInput.type = "text";
+        stepTitleInput.classList.add("step-title");
+        stepTitleInput.name = `analyzedInstructions[0].steps[${stepIndex}].title`;
+
+        let stepDescriptionInput = document.createElement("textarea");
+        stepDescriptionInput.placeholder = 'opis kroku';
+        stepDescriptionInput.classList.add("step-description");
+        stepDescriptionInput.name = `analyzedInstructions[0].steps[${stepIndex}].step`;
+
+
+        // Tworzenie ukrytego pola do numeru kroku
+        let stepNumberInput = document.createElement("input");
+        stepNumberInput.type = "hidden";
+        stepNumberInput.classList.add("step-number");
+        stepNumberInput.name = `analyzedInstructions[0].steps[${stepIndex}].number`;
+
+
+        // Przypisanie numeru kroku
+        // const stepIndex = stepsList.children.length;  // Inkrementowanie numeru kroku
+        //   stepNumberInput.name = `analyzedInstructions[0].steps[${stepIndex.toString()}].number`;
+        // stepNumberInput.value = (stepIndex + 1).toString();
+
+
+        newLi.appendChild(stepTitleInput);
+        newLi.appendChild(stepDescriptionInput);
+        newLi.appendChild(stepNumberInput);
+        stepsList.appendChild(newLi);
+
+        updateStepNumbers();
+    });
+
+
+        // zapis kroków
+        saveStepsButton.addEventListener("click", function () {
+        savedStepsList.innerHTML = "";
+
+        const stepItems = stepsList.querySelectorAll("li");
+        stepItems.forEach((li, index) => {
+        const titleInput = li.querySelector(".step-title");
+        const descriptionInput = li.querySelector(".step-description");
+        const stepNumberInput = li.querySelector(".step-number");
+
+        stepNumberInput.value = index + 1;
+
+        if (titleInput && descriptionInput && titleInput.value.trim() && descriptionInput.value.trim()) {
+        let h3 = document.createElement("h3");
+        h3.innerText = `Krok ${stepNumberInput.value}: ${titleInput.value.trim()}`;
+
+        let p = document.createElement("p");
+        p.innerText = descriptionInput.value.trim();
+
+        let newLi = document.createElement("li");
+        newLi.appendChild(h3);
+        newLi.appendChild(p);
+
+        savedStepsList.appendChild(newLi);
+    }
+    });
+
+        // if (titleInput && descriptionInput && titleInput.value.trim() && descriptionInput.value.trim()) {
+        //     let h3 = document.createElement("h3");
+        //     h3.innerText = `Krok ${index + 1}: ${titleInput.value.trim()}`;
+
+
+        recipeStepsForm.style.display = "none";
+        savedDataSteps.style.display = "block";
+
+        editStepsButton.disabled = false;
+    });
+
+
+        editStepsButton.addEventListener("click", function () {
+        recipeStepsForm.style.display = "block";
+        savedDataSteps.style.display = "none";
+
+
+    });
+
+
+        // zapisu tytułu, opisu i zdjęcia
+        saveButton.addEventListener("click", function () {
+        savedTitle.innerText = titleInput.value;
+        savedDescription.innerText = descriptionInput.value;
+
+        let imagePath = imageInput.value.trim();
+        savedImage.src = imagePath ? "/images/" + imagePath : "/images/przykladowe.png";
+
+
+        recipeTop.style.display = "none";
+        savedData.style.display = "block";
+
+
+        editButton.disabled = false;
+    });
+
+        // edycja tytułu
+        editButton.addEventListener("click", function () {
+        recipeTop.style.display = "block";
+        savedData.style.display = "none";
+    });
+
+
+        //zmienne dla tabeli odzywczej
+        const nutritionForm = document.getElementById("fakeFormNutrition");
+        const savedNutritionData = document.getElementById("savedNutritionData");
+
+        const caloriesInput = document.getElementById("calories");
+        const fatInput = document.getElementById("fat");
+        const carbohydratesInput = document.getElementById("carbohydrates");
+        const proteinInput = document.getElementById("protein");
+
+        const savedCalories = document.getElementById("savedCalories");
+        const savedFat = document.getElementById("savedFat");
+        const savedCarbohydrates = document.getElementById("savedCarbohydrates");
+        const savedProtein = document.getElementById("savedProtein");
+
+        const saveNutritionButton = document.getElementById("save-nutrition");
+        const editNutritionButton = document.getElementById("edit-nutrition");
+
+
+        // zapisu wartości odżywczych
+        saveNutritionButton.addEventListener("click", function () {
+        savedCalories.innerText = caloriesInput.value + " kcal";
+        savedFat.innerText = fatInput.value + " g";
+        savedCarbohydrates.innerText = carbohydratesInput.value + " g";
+        savedProtein.innerText = proteinInput.value + " g";
+
+
+        nutritionForm.style.display = "none";
+        savedNutritionData.style.display = "block";
+
+
+        editNutritionButton.disabled = false;
+    });
+
+        //  edycja wartości odżywczych
+        editNutritionButton.addEventListener("click", function () {
+        nutritionForm.style.display = "block";
+        savedNutritionData.style.display = "none";
+    });
+
+
+        // Obsługa przycisku "Cofnij"
+        document.getElementById("cancelButton").addEventListener("click", function () {
+        window.history.back(); // Cofnij do poprzedniej strony
+    });
+    });
+
+
+
+</script>
+</body>
+</html>
