@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MPR_Projekt_API/MPR_Projekt.MPR_Projekt_API.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MPR_Projekt_API/MPR_Projekt.MPR_Projekt_API.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/MPR_Projekt_CLIENT/MPR_Projekt.MPR_Projekt_CLIENT.main.iml" filepath="$PROJECT_DIR$/.idea/modules/MPR_Projekt_CLIENT/MPR_Projekt.MPR_Projekt_CLIENT.main.iml" />
+    </modules>
+  </component>
+</project>

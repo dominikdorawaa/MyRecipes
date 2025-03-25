@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Gradle Imported" enabled="true">
+        <outputRelativeToContentRoot value="true" />
+        <processorPath useClasspath="false">
+          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
+        </processorPath>
+        <module name="MPR_Projekt.MPR_Projekt_API.main" />
+        <module name="MPR_Projekt.MPR_Projekt_CLIENT.main" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="MPR_Project_CLIENT" target="21" />
+      <module name="MPR_Project_CLIENT.main" target="21" />
+      <module name="MPR_Project_CLIENT.test" target="21" />
+      <module name="MPR_Projekt.main" target="21" />
+      <module name="MPR_Projekt.MPR_Project_API.main" target="21" />
+      <module name="MPR_Projekt.MPR_Project_API.test" target="21" />
+      <module name="MPR_Projekt.MPR_Project_CLIENT.main" target="21" />
+      <module name="MPR_Projekt.MPR_Project_CLIENT.test" target="21" />
+      <module name="MPR_Projekt.test" target="21" />
+      <module name="pl.edu.pjatk.MPR_Projekt" target="21" />
+      <module name="pl.edu.pjatk.MPR_Projekt.main" target="21" />
+      <module name="pl.edu.pjatk.MPR_Projekt.test" target="21" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

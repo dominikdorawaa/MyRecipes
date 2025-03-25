@@ -1,0 +1,4 @@
+rootProject.name = 'MPR_Projekt'
+
+include 'MPR_Projekt_API'
+include 'MPR_Projekt_CLIENT'
